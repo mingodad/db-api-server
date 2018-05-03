@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: http://127.0.0.1:5076/wwwsqldesigner/ -->
+<sql>
+<datatypes db="sqlite">
+	<group label="Affinity">
+		<type label="Integer" default="0" length="0" sql="INTEGER" quote="" color="rgb(238,238,170)"/>
+		<type label="Varchar" length="1" sql="VARCHAR" re="CHARACTER VARYING" quote="'"/>
+		<type label="Text" default="" length="1" sql="TEXT" quote="'" color="rgb(255,200,200)"/>
+		<type label="Numeric" default="0" length="0" sql="NUMERIC" quote="" color="rgb(238,238,170)"/>
+		<type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
+		<type label="Boolean" length="0" sql="BOOLEAN" quote="'"/>
+		<type label="DateTime" length="0" sql="DATETIME" quote="'"/>
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="0" sql="TIME" quote="'"/>
+		<type label="Blob" length="1" sql="BLOB" quote="'" color="rgb(255,200,200)"/>
+		<type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
+	</group>
+</datatypes><table x="199" y="174" name="todo">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="description" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+<comment>What this todo is about</comment>
+</row>
+<row name="status_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="todo_status" row="id" />
+</row>
+<row name="priority_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="todo_priority" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>When priority changes to High we need to email all users to acknowledge it.</comment>
+</table>
+<table x="11" y="14" name="todo_todo_tag">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="todo_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="todo" row="id" />
+</row>
+<row name="todo_tag_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="todo_tags" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="381" y="251" name="todo_priority">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="description" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="8" y="303" name="todo_status">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="description" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="201" y="14" name="todo_tags">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="description" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="11" y="124" name="todo_steps">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="description" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="todo_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="todo" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="587" y="251" name="todo_alarm_indicator">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="description" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="priority_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="todo_priority" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>This table is meant to allow users to indicate which priority will trigger the alarm.
+Only one entry is allowed on this table.</comment>
+</table>
+<table x="587" y="82" name="todo_alarm_entries">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>DATETIME</datatype>
+</row>
+<row name="todo_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="todo" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>This table store the triggered alarm entries that need to be emailed to all managers.</comment>
+</table>
+</sql>

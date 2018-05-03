@@ -1,0 +1,19 @@
+#!/bin/sh
+current_dir=$(pwd)
+script_dir=$(dirname $0)
+
+if [ $script_dir = '.' ]
+then
+    script_dir="$current_dir"
+fi
+
+squilulib="$script_dir/squiluLib"
+http_ports=${1:-"5076,5077s"}
+isdebug=${2:-"false"}
+
+echo $current_dir
+echo $script_dir
+echo $http_ports
+
+./squilu $squilulib/run-server.nut $squilulib $current_dir $http_ports $isdebug
+

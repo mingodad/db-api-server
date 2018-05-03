@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DB API</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <!--<link href="/css/normalize.min.css" rel="stylesheet">-->
+    <!--<link href="/css/ratchet.css" rel="stylesheet">-->
+
+	<link rel="stylesheet" href="/css/table-list.css" type="text/css" />
+	<style type="text/css">
+		body {
+		  font-family: arial,sans-serif;
+		  font-size: 90%;
+		}
+		.tbl-list tbody tr:nth-child(odd) {background-color: #E9F7FC;}
+		table.tbl-list tbody tr:hover {background-color: #ffff99;}
+		.row-link {cursor: pointer;}
+		/*table td {padding: 0.5em;}*/
+		.row-selected, .tbl-list tbody tr.row-selected  {background-color: rgb(179, 228, 249);}
+		.opener-exists {display:none;}
+		label.full-width {display:block; width:100%;}
+		.tbl-edit tr td:nth-child(1) {/*cursor: pointer;*/padding:4px;}
+		.tbl-edit tr td:nth-child(2) {background-color: rgb(236, 255, 254); text-align: right;}
+		.tbl-edit input {margin-left: 4px;}
+		.td-link {color: blue; text-decoration: none;cursor: pointer;}
+	</style>
+	<script type="text/javascript">		
+	</script>
+  </head>
+  <body id="bodyApp">
+	<div id="dyn-content"></div>
+	<!--firefox started given exceptions when the scripts bellow were loaded from header-->
+	<script type="text/javascript" src="/js/db-api-list-edit.js"></script>
+	<!--The order of the /*the_api_base_uri*/ javascript is important it should be after "/js/db-api-list-edit.js" and before "/js/db-api-json.js"-->
+	<script type="text/javascript">/*the_api_base_uri*/</script>
+	<script type="text/javascript" src="/js/db-api-json.js"></script>
+  </body>
+</html>

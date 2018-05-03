@@ -1,0 +1,20 @@
+#!/bin/sh
+current_dir=$(pwd)
+script_dir=$(dirname $0)
+
+if [ $script_dir = '.' ]
+then
+    script_dir="$current_dir"
+fi
+
+squilulib="$script_dir/squiluLib"
+web_root=${1:-$current_dir}
+http_ports=${2:-"8072,8073s"}
+isdebug=${3:-"false"}
+num_threads=${2:-"1"}
+
+echo $current_dir
+echo $script_dir
+
+./squilu $squilulib/show-github-md.nut $squilulib $current_dir $http_ports $isdebug $web_root $num_threads
+

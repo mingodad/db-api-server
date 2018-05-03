@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: http://127.0.0.1:5076/wwwsqldesigner/ -->
+<sql>
+<datatypes db="sqlite">
+	<group label="Affinity">
+		<type label="Integer" default="0" length="0" sql="INTEGER" quote="" color="rgb(238,238,170)"/>
+		<type label="Varchar" length="1" sql="VARCHAR" re="CHARACTER VARYING" quote="'"/>
+		<type label="Text" default="" length="1" sql="TEXT" quote="'" color="rgb(255,200,200)"/>
+		<type label="Numeric" default="0" length="0" sql="NUMERIC" quote="" color="rgb(238,238,170)"/>
+		<type label="Real" default="0" length="0" sql="REAL" quote="" color="rgb(238,238,170)"/>
+		<type label="Boolean" length="0" sql="BOOLEAN" quote="'"/>
+		<type label="Timestamp" length="0" sql="TIMESTAMP" quote="'"/>
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="0" sql="TIME" quote="'"/>
+		<type label="BLOB" length="1" sql="BLOB" quote="'" color="rgb(255,200,200)"/>
+		<type label="None" default="" length="0" sql="NONE" quote="" color="rgb(200,255,200)"/>
+	</group>
+</datatypes><table x="10" y="10" name="__tables_metadata">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="label" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="inherit_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="tooltip" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="is_read_only" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="null_when_blank" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="escape_html" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__escape_html_types" row="id" />
+</row>
+<row name="is_view" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="default_list_limit" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="with_field_prefix" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="with_sql_where" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="with_order_by" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="edit_table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="list_table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="extra_html" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store all the tables</comment>
+</table>
+<table x="276" y="11" name="__table_metadata_fields">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="is_required" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="field_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__fields_metadata" row="id" />
+</row>
+<row name="is_readonly" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="null_when_empty" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="is_input_only" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="show_on_list" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="show_to_edit" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="accept_for_insert_update" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store all the fields for tables</comment>
+</table>
+<table x="571" y="9" name="__table_metadata_edit_links">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="field_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="link_table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="link_field_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="show_text_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="filter_src_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="filter_dest_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="show_table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="show_field_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="sql" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="no_server_fill" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store all the link fields for a table
+
+insert or ignore into __table_metadata_edit_links(table_id, field_id, link_table_id, link_field_id, show_table_id, show_field_id, show_text_id)
+select table_id, field_id, p.id as link_table_id, fm_id.id as link_field_id,
+	p.id as show_table_id, fm_id.id as show_field_id, fm_name.id as show_text_id
+from __table_metadata_fields as tf
+join __fields_metadata as fm on tf.field_id = fm.id and fm.name = 'create_uid',
+(select id from __tables_metadata where name = 'res_partner') as p,
+(select id from __fields_metadata where name = 'id') as fm_id,
+(select id from __fields_metadata where name = 'name') as fm_name</comment>
+</table>
+<table x="10" y="504" name="__fields_metadata">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="label" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="inherit_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__fields_metadata" row="id" />
+</row>
+<row name="length" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="type_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__field_types" row="id" />
+</row>
+<row name="default_value" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="valid_values" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="input_type" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="tooltip" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="is_required" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="is_read_only" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="is_calculated" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="null_when_blank" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<row name="escape_html" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__escape_html_types" row="id" />
+</row>
+<row name="collate_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__field_type_collations" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store all the available fields for this database</comment>
+</table>
+<table x="227" y="503" name="__table_metadata_filter_tables">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="table_filtered_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="table_filtered_field_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="sql" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="544" y="506" name="__escape_html_types">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store the options for html escape</comment>
+</table>
+<table x="775" y="503" name="__field_types">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="inherit_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__field_types" row="id" />
+</row>
+<row name="length" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store all allowed field types for tables</comment>
+</table>
+<table x="534" y="739" name="__table_metadata_accept_fields">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="field_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store all the accepted/editable fields for a table</comment>
+</table>
+<table x="230" y="1001" name="__table_metadata_list_fields">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="table_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__tables_metadata" row="id" />
+</row>
+<row name="field_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+<relation table="__table_metadata_fields" row="field_id" />
+</row>
+<row name="field_format" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+<comment>Store all the list fields for a table</comment>
+</table>
+<table x="686" y="940" name="__field_type_collations">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="169" y="1216" name="__app_sql_parameters">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="default_value" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="app_sql_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="field_type" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="11" y="1217" name="__app_menu">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="label" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="sequence" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="parent_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="code" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="table_view_id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="391" y="1216" name="__app_code">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="path" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="content" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="543" y="1216" name="__app_sql">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="name" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="sql" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="base" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="683" y="1216" name="__users">
+<row name="id" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_version_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_cdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="_mdate_" null="0" autoincrement="0">
+<datatype>INTEGER</datatype>
+</row>
+<row name="notes" null="0" autoincrement="0">
+<datatype>TEXT</datatype>
+</row>
+<row name="username" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="password" null="0" autoincrement="0">
+<datatype>VARCHAR</datatype>
+</row>
+<row name="is_admin" null="0" autoincrement="0">
+<datatype>BOOLEAN</datatype>
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+</sql>

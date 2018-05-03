@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<!--
+ SQLite IDE: Application manage sqlite3 databases 
+ Copyright (c) 2015, Domingo Alvarez Duarte - mingodad[at]gmail[dot]com
+ 
+ Released under the GNU LESSER GENERAL PUBLIC LICENSE  Version 3
+-->
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>SQLite3 IDE</title>
+	<meta name="description" content="SQLite3 database manager.">
+	<link rel="stylesheet" href="/css/normalize.min.css" type="text/css" />
+	<link rel="stylesheet" href="/css/table-list.css" type="text/css" />
+	<link rel="stylesheet" href="/css/jslayoutmanager.css">
+	<link rel="stylesheet" href="/css/sqlite-ide.css">
+	<script type="text/javascript" src="/js/jslayoutmanager.js"></script>
+	<script type="text/javascript" src="/js/db-api-list-edit.js"></script>
+	<script type="text/javascript" src="/js/sqlite-ide.js"></script>
+	<script type="text/javascript">/*the_api_base_uri*/</script>
+	<style type="text/css">
+		body {
+			font-family: arial, sans-serif;
+			font-size: 90%;
+		}
+		
+		.tbl-list tbody tr:nth-child(odd) {
+			background-color: #E9F7FC;
+		}
+		
+		table.tbl-list tbody tr:hover {
+			background-color: #ffff99;
+		}
+		
+		.row-link {
+			cursor: pointer;
+		}
+		/*table td {padding: 0.5em;}*/
+		
+		.row-selected,
+		.tbl-list tbody tr.row-selected {
+			background-color: rgb(179, 228, 249);
+		}
+		
+		.tbl-tv td:first-child,
+		.tbl-tv th:first-child {
+			display: none;
+		}
+		
+		.opener-exists {
+			display: none;
+		}
+		
+		label.full-width {
+			display: block;
+			width: 100%;
+		}
+		
+		.tbl-edit tr td:nth-child(1) {
+			cursor: pointer;
+			padding: 4px;
+		}
+		
+		.tbl-edit tr td:nth-child(2) {
+			background-color: rgb(236, 255, 254);
+			text-align: right;
+		}
+		
+		.tbl-edit input {
+			margin-left: 4px;
+		}
+		
+		.td-link {
+			color: blue;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		#tab-table-view-data, #tab-table-view-meta-data {
+			margin: 5px;
+		}
+		.btn-reparse, .btn-backup {float:right; margin-left:5px;}
+	</style>
+</head>
+
+<body id="bodyApp">
+
+	<div id="root" data-layout="sz:'fullpage'">
+		<div id="main-menu" data-layout="sz:'boxV'">
+			<!--
+			<ul data-layout="sz:'menu',bar:1,ex:1" id="menu" onclick="manageMenuClick(event)">
+				<li>File
+					<ul data-layout="sz:'menu'">
+						<li data-action="project-new">New</li>
+						<li data-action="project-open">Open</li>
+						<li>Open recent
+							<ul data-layout="sz:'menu'">
+								<li>First</li>
+								<li>Second</li>
+								<li>Third</li>
+							</ul>
+						</li>
+						<li data-action="project-save">Save</li>
+						<li data-action="project-saveas">Save As</li>
+						<li>Properties</li>
+						<li data-action="project-close">Close</li>
+						<li>Quit</li>
+					</ul>
+				</li>
+				<li>Edit
+					<ul data-layout="sz:'menu'">
+						<li>Undo</li>
+						<li>Redo</li>
+						<li>Cut</li>
+						<li>Copy</li>
+						<li>Paste</li>
+						<li>Delete</li>
+					</ul>
+				</li>
+				<li>View
+					<ul data-layout="sz:'menu'">
+						<li>Toolbar</li>
+						<li>Statusbar</li>
+						<li>Project Tabs</li>
+						<li>Palete Appearence
+							<ul data-layout="sz:'menu'">
+								<li>Text beside icons</li>
+								<li>Icons only</li>
+								<li>Text only</li>
+								<li>Use samll icons</li>
+							</ul>
+						</li>
+						<li class="slmignore">
+							<label>Dock Palette
+								<input type="checkbox" checked="checked" id="dock-palette-checkbox" onchange="dockPaletteShowHide(this.checked);">
+							</label>
+						</li>
+						<li>Dock Inspector</li>
+						<li class="slmignore">
+							<label>Dock Properties
+								<input type="checkbox" checked="checked" id="dock-properties-checkbox" onchange="dockPropertiesShowHide(this.checked);">
+							</label>
+						</li>
+					</ul>
+				</li>
+				<li>Project
+					<ul data-layout="sz:'menu'">
+						<li>Next Project</li>
+						<li>Previous Project</li>
+						<li>Unsave Project 1</li>
+					</ul>
+				</li>
+				<li>Help
+					<ul data-layout="sz:'menu'">
+						<li>Developer Reference</li>
+						<li>About</li>
+					</ul>
+				</li>
+			</ul>
+			-->
+			<div data-layout="ex:1,p:1,sz:'splitV'">
+				<div data-layout="ex:1,p:1,sash:'80%',sz:'splitH',inverse:1">
+					<div id="table-views" data-layout="sz:'boxV'">
+						<div data-layout="p:2" class="main-tables-views">
+							<table id="main-tables-views" class="slmignore tbl-list tbl-tv" onclick="tableViewHandleClick(this, event, onTableViewClick)">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Name <input type="checkbox" id="hide-sys-tables-cbx" onclick="hideSystemTablesFromList(this)"></th>
+										<th>Type</th>
+									</tr>
+								</thead>
+								<tbody></tbody>
+							</table>
+						</div>
+						<input type="text" data-layout="ex:1" placeholder="Search Tables/Views" onkeyup="doTableSearch(this, 'main-tables-views')">
+					</div>
+					<div data-layout="ex:1,sz:'boxV'">
+						<div data-layout="ex:1">
+							<label>Max.Rows</label>
+							<input id="max-rows" type="number" value="50">
+							<select id="select-gen-sql">
+								<option value="select">Select</option>
+								<option value="insert">Insert</option>
+								<option value="update">Update</option>
+								<option value="delete">Delete</option>
+								<option value="schema update">Schema update</option>
+								<option value="schema update norefs">Schema update no refs</option>
+								<option value="sqlite_master update">SQLite master update</option>
+								<option value="drop table">Drop table</option>
+								<option value="dump table">Dump table</option>
+								<option value="create index">Create Index</option>
+								<option value="create trigger">Create Trigger</option>
+								<option value="references">References</option>
+								<option value="search all">Search all tables</option>
+								<option value="sql_macros">SQL Macros</option>
+								<option value="sql_macros_base">SQL Macros base</option>
+								<option value="sql_macros_sql">SQL Macros sql</option>
+								<option value="sql_macros_insert">SQL Macros insert</option>
+								<option value="sql_macros_update">SQL Macros update</option>
+								<option value="squilu_load">SquiLu Load</option>
+								<option value="squilu_insert">SquiLu Insert</option>
+								<option value="squilu_update">SquiLu Update</option>
+							</select>
+							<button onclick="doGenerateSql()">Generate</button>
+							<button onclick="doExecuteSql()">Execute</button>
+							<!--
+							<button>Load</button>
+							<button>Save</button>
+							-->
+							<button onclick="doUpdateMetadata()" class="btn-reparse">Update Metadata</button>
+							<button onclick="doBackup()" class="btn-backup">Backup</button>
+						</div>
+						<textarea id="sql-code"  data-layout="ex:1,p:2"></textarea>
+						<!--
+						<div data-layout="p:1,ex:1,sz:'tabs'">
+							<div data-layout="sz:'boxV',title:'Messages'">
+								<textarea id="ta-messages" data-layout="ex:1,p:2"></textarea>
+							</div>
+							<div data-layout="sz:'boxV',title:'History'">
+								<textarea id="ta-history" data-layout="ex:1,p:2"></textarea>
+							</div>
+						</div>
+						-->
+					</div>
+				</div>
+				<div data-layout="ex:1,sz:'boxV'">
+					<div data-layout="p:1,ex:1,sz:'tabs'" onchange="detailsChanged(event)" id="tabs-details">
+						<div id="tab-table-view-data" data-layout="title:'Data'">
+						</div>
+						<div id="tab-table-view-raw-data" data-layout="title:'Raw Data'">
+							<table id="table-view-raw-data" class="slmignore tbl-list"></table>
+						</div>
+						<div id="tab-table-view-meta-data" data-layout="title:'Meta Data'">
+						</div>
+						<div data-layout="sz:'boxV',title:'Indexes'">
+							<textarea id="ta-table-indexes" data-layout="ex:1,p:2"></textarea>
+						</div>
+						<div data-layout="sz:'boxV',title:'Triggers'">
+							<textarea id="ta-table-triggers" data-layout="ex:1,p:2"></textarea>
+						</div>
+						<div data-layout="sz:'boxV',title:'Schema'">
+							<textarea id="ta-table-schema" data-layout="ex:1,p:2"></textarea>
+						</div>
+						<div data-layout="sz:'boxV',title:'References'">
+							<textarea id="ta-references" data-layout="ex:1,p:2"></textarea>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="statusbar" data-layout="ex:1" style="background-color:#ccF">I'm the statusbar</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

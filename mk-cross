@@ -1,0 +1,27 @@
+build=${1:-release}
+
+make CC="gcc -std=c99" build-type=$build-linux-64 \
+	NO-UUID=1 LOCAL-ZLIB=1 WITH-OLD-GCC=1
+
+make CC="gcc -std=c99" build-type=$build-linux-32 \
+	NO-UUID=1 LOCAL-ZLIB=1 WITH-OLD-GCC=1 TARGET_BITS32=1
+
+make CC="i686-w64-mingw32-gcc -std=c99" \
+	CXX=i686-w64-mingw32-g++ \
+	WIN32=1 LOCAL-ZLIB=1 \
+	build-type=$build-mingw-32 WITH-OLD-GCC=1 TARGET_BITS32=1
+
+make CC="x86_64-w64-mingw32-gcc -std=c99" \
+	CXX=x86_64-w64-mingw32-g++ \
+	WIN32=1 LOCAL-ZLIB=1 \
+	build-type=$build-mingw-64 WITH-OLD-GCC=1 TARGET_BITS64=1
+
+make CC="i386-apple-darwin14-clang -std=c99" \
+	CXX=i386-apple-darwin14-clang++ \
+	DARWIN=1 LOCAL-ZLIB=1 \
+	build-type=$build-darwin-32 WITH-OLD-GCC=1 TARGET_BITS32=1
+
+make CC="x86_64-apple-darwin14-clang -std=c99" \
+	CXX=x86_64-apple-darwin14-clang++ \
+	DARWIN=1 LOCAL-ZLIB=1 \
+	build-type=$build-darwin-64 WITH-OLD-GCC=1 TARGET_BITS64=1

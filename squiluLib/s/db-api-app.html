@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>DB API</title>
+
+    <!-- Sets initial viewport load and disables zooming  -->
+    <!--<meta name="viewport" content="initial-scale=1, maximum-scale=1">-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Makes your prototype chrome-less once bookmarked to your phone's home screen -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    
+    <!--<link href="/css/normalize.min.css" rel="stylesheet">-->
+    <!--<link href="/css/ratchet.css" rel="stylesheet">-->
+
+	<link rel="stylesheet" href="/css/table-list.css" type="text/css" />
+	<style type="text/css">
+		body {
+		  font-family: verdana, trebuchet, arial,sans-serif;
+		  font-size: 90%;
+		}
+		#main-menu {}
+
+		#main-menu ul{
+		    list-style-type:none;
+		    white-space:nowrap;
+		    overflow-x:auto;
+		}
+
+		#main-menu li{
+		    display:inline;
+			cursor: pointer;
+		}
+
+		#secondary-menu {
+			/*float:left;*/
+			/*clear:left;*/
+		}
+		#workspace {
+			margin:0;
+			width:100%;
+		}
+		/*
+		#tdsm, #tddc {
+			transition: width 0.5s ease, visibility 0.5s ease;
+		}*/
+		#tddc {
+			width:100%;
+		}
+		#secondary-menu li {margin-left: 14px;}
+		#main-menu a, #secondary-menu a {text-decoration: none; color:blue; cursor:pointer;}
+
+		#dyn-content {/*float:left;*/}		
+		#secondary-menu {margin-right: 10px;}
+		.tbl-list tbody tr:nth-child(odd) {background-color: #E9F7FC;}
+		table.tbl-list tbody tr:hover {background-color: #ffff99;}
+		.row-link {cursor: pointer;}
+		/*table td {padding: 0.5em;}*/
+		.row-selected, .tbl-list tbody tr.row-selected  {background-color: rgb(179, 228, 249);}
+		.opener-exists {display:none;}
+		label.full-width {display:block; width:100%;}
+		.tbl-edit tr td:nth-child(1) {cursor: pointer;padding:4px;}
+		.tbl-edit tr td:nth-child(2) {background-color: rgb(236, 255, 254); text-align: right;}
+		.tbl-edit input {margin-left: 4px;}
+		.td-link {color: blue; text-decoration: none;cursor: pointer;}
+		#drawer-switch {float:left; border: 1px solid #B7D1E6; padding:3px; margin-right: 10px;}
+	</style>
+	<script type="text/javascript">		
+		function toggle_visibility(id, id2) {
+			var style = $id(id).style;
+			var style2 = $id(id2).style;
+			if(!style.display || (style.display == "block"))
+			{
+				style.display = 'none';
+				style2.padding = "0";
+			}
+			else
+			{
+				style.display = 'block';
+				style2.padding = "";
+			}
+			return style.display;
+		}
+		function swapSecondaryMenu()
+		{
+			var display = toggle_visibility("secondary-menu", "tdsm");
+			var elm = $id("drawer-switch");
+			if(display == "block") setInnerText(elm, "|<<|");
+			else setInnerText(elm, "|>>|");
+		}
+	</script>
+  </head>
+  <body>
+	<div id="the-top-bar">
+		<span id="drawer-switch" onclick="swapSecondaryMenu()">|&lt;&lt;|</span><span id="main-menu"></span>
+	</div>
+	<table id="workspace">
+	<tr><td id="tdsm">
+	<div id="secondary-menu"></div>
+	</td><td id="tddc">
+	<div id="dyn-content"></div>
+	</td></tr></table>
+	<script type="text/javascript" src="/js/db-api-app.js"></script>
+	<script type="text/javascript" src="/js/db-api-list-edit.js"></script>
+	<!--The order of the /*the_api_base_uri*/ javascript is important it should be after "/js/db-api-list-edit.js" and before "/js/db-api-json.js"-->
+	<script type="text/javascript">/*the_api_base_uri*/</script>
+	<script type="text/javascript" src="/js/db-api-json.js"></script>
+  </body>
+</html>
