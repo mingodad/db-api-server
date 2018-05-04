@@ -1229,6 +1229,28 @@ local function my_uri_filter(request)
 					
 					auto stmt_fk = db.prepare("SELECT	id, link_field_id_name, link_table_id_name FROM __table_metadata_edit_links_view WHERE table_id=? and field_id=?");
 					
+					//try to preserve already positioned tables
+					auto xy_tables;
+					local xml_base_name = getXmlFileName(keyword);
+					if(existsfile(xml_base_name))
+					{
+						xy_tables = {};
+						auto xml = readfile("todo.wwwsqldesigner.xml");
+
+						xml.gmatch(
+							"<table ([^>/]+)>",
+							function(attr)
+							{
+								//print(attr);
+								auto tbl_name = attr.match("name=\"([^\"]+)\"");
+								auto xy = attr.match("(x=.-y=\"%d+\")");
+								//print(tbl_name, xy);
+								xy_tables[tbl_name] <- xy;
+								return true;
+							}
+						);
+					}
+					
 					auto xml = readfile(request.get_option("document_root") + "/wwwsqldesigner/wwwsqldesigner.template.xml");
 					auto buf = blob();
 					
@@ -1238,7 +1260,13 @@ local function my_uri_filter(request)
 						auto tbl_name = stmt_tables.col(1);
 						auto tbl_notes = stmt_tables.col(2);
 						
-						buf.write("<table name=\"", tbl_name, "\">");
+						buf.write("<table name=\"", tbl_name, "\"");
+						if(xy_tables)
+						{
+							auto xy = table_rawget(xy_tables, tbl_name, false);
+							if(xy) buf.write(" ", xy, " ");
+						}
+						buf.write(">");
 
 						//debug_print("\nTable : ", tbl_id, " : ",  tbl_name);
 						
@@ -1274,6 +1302,7 @@ local function my_uri_filter(request)
 						}
 						buf.write("</table>\n");
 					}
+					if(xy_tables) buf.write("<usexy />\n");
 					xml = xml.replace("{tables}", buf.tostring());
 					return sendXmlContent(request, xml);
 				}

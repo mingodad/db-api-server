@@ -483,7 +483,9 @@ SQL.IO.prototype.importresponse = function(data, code) {
 	this.owner.window.hideThrobber();
 	if (!this.check(code)) { return; }
 	if (this.fromXML(data)) {
-		this.owner.alignTables();
+		var usexy = data.getElementsByTagName("usexy");
+		if(usexy.length == 0)
+			this.owner.alignTables();
 	}
 }
 
