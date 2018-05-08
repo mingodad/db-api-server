@@ -112,10 +112,10 @@ local function sendXmlContent(request, response_body)
 	return true;
 }
 
-local function sendBlobContent(request, response_body)
+local function sendBlobContent(request, response_body, mime_type="application/octet-stream")
 {
 	//local resp_fmt = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=utf-8;\r\nContent-Length: %d\r\n\r\n%s";
-	local resp_fmt = get_response_headers_str("application/octet-stream", false);
+	local resp_fmt = get_response_headers_str(mime_type, false);
 	local resp = format(resp_fmt, response_body.len());
 	resp += "\r\n" + response_body;
 	request.print(resp);
@@ -505,7 +505,9 @@ local function doPost(db, table_name, id, values_tbl, empty)
 				if(col_type == "BLOB")
 				{
 					local value = table_rawget(values_tbl, col_name);
-					if(!value || value.len() == 0)
+					//debug_print("\nblob : ", type(value));
+					//foreach(k,v in value) debug_print("\nk : ", k, " : ", type(v));
+					if(!value || value.size == 0)
 					{
 						if(!table_rawin(values_tbl, "_x_delete_blob_" + col_name))
 						{
@@ -671,6 +673,7 @@ local function checkAPIRequest(request, request_uri, db, base_uri, tbl_name)
 	//local req_count = table_rawget(http_session, "req_count", 0);
 	//table_rawset(http_session, "req_count", ++req_count);
 	local response_body = false;
+	local response_mime_type = false;
 	
 	//debug_print("\ncheckAPIRequest ", __LINE__, "\t", tbl_name);
 	
@@ -728,6 +731,15 @@ local function checkAPIRequest(request, request_uri, db, base_uri, tbl_name)
 						{
 							auto the_tbl_name = SQLiteUtils.getTableEditInstead(db, tbl_name);
 							response_body = SQLiteUtils.getByIdFieldAsBlob(db, the_tbl_name, the_id, field_name);
+							
+							local inline_file_name = table_rawget(get_params, "ifile", false); //inline file
+							local attach_file_name = table_rawget(get_params, "file", false); //as attachment
+							if(attach_file_name || inline_file_name)
+							{
+								local file_mime_type = get_builtin_mime_type(attach_file_name || inline_file_name);
+								if(attach_file_name) response_mime_type = format("%s;\r\nContent-Disposition: attachment; filename=%s", file_mime_type, attach_file_name);
+								else response_mime_type = format("%s", file_mime_type);
+							}
 						}
 					}
 					//response_body = stmt.asJsonObject();
@@ -788,7 +800,14 @@ local function checkAPIRequest(request, request_uri, db, base_uri, tbl_name)
 	if(response_body)
 	{
 		if(extension == EXTENSION_JSON) return sendJsonContent(request, response_body);
-		else if(extension == EXTENSION_BLOB) return sendBlobContent(request, response_body);
+		else if(extension == EXTENSION_BLOB)
+		{
+			if(response_mime_type)
+			{
+				return sendBlobContent(request, response_body, response_mime_type);
+			}
+			return sendBlobContent(request, response_body);
+		}
 		else return sendHtmlContent(request, response_body);
 	}
 	return response_body != false;
@@ -1217,7 +1236,7 @@ local function my_uri_filter(request)
 					auto stmt_tables = db.prepare("select id, name, notes from __tables_metadata where is_view=0 and name not like '/_%' escape '/'");
 					//auto stmt_tables = db.prepare("select id, name, notes from __tables_metadata where is_view=0 and name like '/_%' escape '/'"); //custom data dictionary
 					auto stmt_fields = db.prepare([==[
-						SELECT fm.id, fm.name, fm.type
+						SELECT fm.id, fm.name, fm.type, tmf.notes
 						FROM "__table_metadata_fields" AS tmf
 						JOIN "__tables_metadata" AS tm
 							ON tmf.table_id = tm.id
@@ -1227,7 +1246,7 @@ local function my_uri_filter(request)
 						order by tmf.field_id
 					]==]);
 					
-					auto stmt_fk = db.prepare("SELECT	id, link_field_id_name, link_table_id_name FROM __table_metadata_edit_links_view WHERE table_id=? and field_id=?");
+					//auto stmt_fk = db.prepare("SELECT	id, link_field_id_name, link_table_id_name FROM __table_metadata_edit_links_view WHERE table_id=? and field_id=?");
 					
 					//try to preserve already positioned tables
 					auto xy_tables;
@@ -1235,7 +1254,7 @@ local function my_uri_filter(request)
 					if(existsfile(xml_base_name))
 					{
 						xy_tables = {};
-						auto xml = readfile("todo.wwwsqldesigner.xml");
+						auto xml = readfile(xml_base_name);
 
 						xml.gmatch(
 							"<table ([^>/]+)>",
@@ -1260,6 +1279,16 @@ local function my_uri_filter(request)
 						auto tbl_name = stmt_tables.col(1);
 						auto tbl_notes = stmt_tables.col(2);
 						
+						auto table_fks;
+						auto stmt_fk = db.prepare("PRAGMA foreign_key_list(" + tbl_name + ");");
+						while(stmt_fk.next_row())
+						{
+							if(!table_fks) table_fks = {};
+							
+							table_fks[stmt_fk.col("from")] <- [stmt_fk.col("table"), stmt_fk.col("to")];
+						}
+						stmt_fk.finalize();
+						
 						buf.write("<table name=\"", tbl_name, "\"");
 						if(xy_tables)
 						{
@@ -1277,11 +1306,17 @@ local function my_uri_filter(request)
 							auto fld_id = stmt_fields.col(0);
 							auto fld_name = stmt_fields.col(1);
 							auto fld_type = stmt_fields.col(2);
+							auto fld_notes = stmt_fields.col(3);
 							//FIXME assume first field is a primary key
 							if(!primary_key) primary_key = fld_name;
 							
 							//debug_print("\nField : ", fld_id, " : ",  fld_name, " : ", fld_type);
 							buf.write("<row name=\"", fld_name, "\">\n<datatype>", fld_type, "</datatype>\n");
+							if((type(fld_notes) == "string") && fld_notes.len())
+							{
+								buf.write("<comment>", sanitizeInputValue(fld_notes), "</comment>\n");
+							}
+							/*
 							stmt_fk.bind(1, tbl_id);
 							stmt_fk.bind(2, fld_id);
 							while(stmt_fk.next_row())
@@ -1289,6 +1324,15 @@ local function my_uri_filter(request)
 								buf.write("<relation table=\"", stmt_fk.col(2), "\" row=\"", stmt_fk.col(1), "\" />\n");
 							}
 							stmt_fk.reset();
+							*/
+							if(table_fks)
+							{
+								auto fk = table_rawget(table_fks, fld_name, false);
+								if(fk)
+								{
+									buf.write("<relation table=\"", fk[0], "\" row=\"", fk[1], "\" />\n");
+								}
+							}
 							buf.write("</row>\n");
 						}
 						stmt_fields.reset();
